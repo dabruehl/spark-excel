@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      SCALA_VERSION: "2.13"
+      SCALA_VERSION: "2.13.16"
       SPARK_VERSION: "4.0.0"
 
     steps:
@@ -58,10 +58,13 @@ jobs:
           echo "ASSEMBLY_DIR=$(./mill show spark-excel[${{ env.SCALA_VERSION }},${{ env.SPARK_VERSION }}].assembly | tail -n1)" >> $GITHUB_ENV
 
       # Upload the built jar(s)
+      - name: Derive short Scala version
+        run: echo "SCALA_SHORT=$(echo ${{ env.SCALA_VERSION }} | cut -d'.' -f1-2)" >> $GITHUB_ENV
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: spark_excel_${{ env.SCALA_VERSION }}_${{ env.SPARK_VERSION }}_${{ github.sha }}
+          name: spark_excel_${{ env.SCALA_SHORT }}_${{ env.SPARK_VERSION }}_${{ github.sha }}
           path: |
             ${{ env.ASSEMBLY_DIR }}/**/*.jar
             out/**/assembly.dest/**/*.jar
