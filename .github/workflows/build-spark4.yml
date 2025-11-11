@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      SCALA_VERSION: "2.13.16"   # use your preferred 2.13.x
+      SCALA_VERSION: "2.13"
       SPARK_VERSION: "4.0.0"
 
     steps:
@@ -51,7 +51,7 @@ jobs:
       - name: Make mill executable
         run: chmod +x ./mill
 
-      # Build the assembly JAR for Spark 4.0.0 / Scala 2.13
+      # Build the assembly JAR
       - name: Build assembly
         run: |
           ./mill -i spark-excel[${{ env.SCALA_VERSION }},${{ env.SPARK_VERSION }}].assembly
@@ -61,7 +61,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: spark-excel_${{ env.SCALA_VERSION }}-${{ env.SPARK_VERSION }}-${{ github.sha }}
+          name: spark_excel_${{ env.SCALA_VERSION }}_${{ env.SPARK_VERSION }}_${{ github.sha }}
           path: |
             ${{ env.ASSEMBLY_DIR }}/**/*.jar
             out/**/assembly.dest/**/*.jar
