@@ -44,6 +44,6 @@ class ExcelDataSource extends FileDataSourceV2 {
 
   /** The string that represents the format that this data source provider uses
     */
-  override def shortName(): String = "excel"
+  override def shortName(): String = "xel"
 
 }
